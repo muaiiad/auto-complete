@@ -1,5 +1,6 @@
 #include <iostream>
-
+#include <fstream>
+#include "Trie.h"
 /*
 Autocomplete System - Feature Specification
 
@@ -37,6 +38,8 @@ Functionality:
 
 */
 
+
+
 int main() {
 
     /*
@@ -50,6 +53,10 @@ int main() {
     
     */
 
+    Trie trie;
+    trie.insertWord("Hi");
+    trie.insertWord("My");
+    trie.deleteWord("Hi");
 
 	std::cout << "Testing" << std::endl;
 }

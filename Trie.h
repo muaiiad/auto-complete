@@ -1,0 +1,27 @@
+#pragma once
+#include <unordered_map>
+#include <string>
+
+class Trie
+{
+private:
+	struct Node {
+		bool isWord = false;
+		int frequency = 0;
+		std::unordered_map<char, Node> children;
+	};
+private:
+	Node root;
+public:
+	Trie();
+	~Trie();
+	void insertWord(const std::string& word, const int frequency = 1);
+	void deleteWord(const std::string& word);
+	Node* searchWord(const std::string& key);
+	void increaseFrequency(const std::string& word);
+	
+
+
+
+};
+
