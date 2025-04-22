@@ -56,7 +56,7 @@ int main() {
     Trie trie;
     trie.insertWord("Hi");
     trie.insertWord("My");
-    trie.deleteWord("Hi");
+    trie.increaseFrequency("Hi");
 
 	std::cout << "Testing" << std::endl;
 }

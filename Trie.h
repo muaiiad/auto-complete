@@ -15,7 +15,7 @@ private:
 public:
 	Trie();
 	~Trie();
-	void insertWord(const std::string& word, const int frequency = 1);
+	void insertWord(const std::string& word, const int freq = 1);
 	void deleteWord(const std::string& word);
 	Node* searchWord(const std::string& key);
 	void increaseFrequency(const std::string& word);

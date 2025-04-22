@@ -9,7 +9,7 @@ Trie::~Trie()
 {
 }
 
-void Trie::insertWord(const std::string& word, const int frequency = 1) {
+void Trie::insertWord(const std::string& word, const int freq) {
 
 	Node* temp = &root;
 
@@ -22,6 +22,7 @@ void Trie::insertWord(const std::string& word, const int frequency = 1) {
 	}
 
 	temp->isWord = true;
+	temp->frequency = freq;
 }
 
 void Trie::deleteWord(const std::string& word) {
