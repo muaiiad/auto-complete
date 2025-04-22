@@ -38,6 +38,28 @@ Functionality:
 
 */
 
+void loadDictionary(Trie &trie) {
+    std::string word;
+    int frequency = 0;
+    std::ifstream dictionary("Dictionary.txt");
+    if (dictionary.is_open()) {
+        while (dictionary >> word >> frequency) {
+            trie.insertWord(word, frequency);
+        }
+        dictionary.close();
+    }
+    else {
+        std::cerr << "File not found.\n";
+    }
+}
+
+void writeDictionary(Trie& trie) {
+    std::string word;
+    int frequency = 0;
+
+
+}
+
 
 
 int main() {
@@ -52,8 +74,9 @@ int main() {
     5 - Exit
     
     */
-
     Trie trie;
+
+    loadDictionary(trie);
     trie.insertWord("Hi");
     trie.insertWord("My");
     trie.increaseFrequency("Hi");
