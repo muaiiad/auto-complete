@@ -67,3 +67,28 @@ void Trie::increaseFrequency(const std::string& word) {
 
 	temp->frequency++;
 }
+
+std::vector<std::string> Trie::frequencySearch(std::string prefix) {
+	return std::vector<std::string>();
+}
+
+std::vector<std::string> Trie::shortestSearch(std::string prefix) {
+
+
+	return std::vector<std::string>();
+}
+
+std::vector<std::string> Trie::lexicographicalSearch(std::string prefix) {
+	std::vector<std::string> wordList;
+	Node* node = searchWord(prefix);
+	
+	DFS(node,prefix,wordList);
+
+	return wordList;
+}
+
+void Trie::DFS(Node* node, std::string& prefix, std::vector<std::string>& wordList) {
+
+	
+
+}
