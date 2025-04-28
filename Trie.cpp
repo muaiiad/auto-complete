@@ -1,5 +1,7 @@
 #include "Trie.h"
 #include <iostream>
+#include <queue>
+
 
 Trie::Trie()
 {
@@ -66,29 +68,77 @@ void Trie::increaseFrequency(const std::string& word) {
 	}
 
 	temp->frequency++;
+	if (temp->frequency >= 3) {
+		temp->isWord = true;
+	}
 }
 
 std::vector<std::string> Trie::frequencySearch(std::string prefix) {
-	return std::vector<std::string>();
+	std::priority_queue<std::pair<int, std::string>> pq;
+	std::queue<std::pair<Node*, std::string>> q;
+
+	Node* root = searchWord(prefix);
+
+	q.push(std::make_pair(root, prefix));
+
+
+	while (!q.empty()) {
+		std::pair<Node*, std::string> current = q.front();
+		if (q.front().first->isWord) {
+			pq.push({ q.front().first->frequency, q.front().second });
+		}
+		q.pop();
+
+		for (auto& [letter, child] : current.first->children) {
+			q.push(std::make_pair(&child, current.second + letter));
+		}
+	}
+
+
+	std::vector<std::string> result;
+	while (!pq.empty()) {
+		result.push_back(pq.top().second);
+		pq.pop();
+	}
+	return result;
 }
 
 std::vector<std::string> Trie::shortestSearch(std::string prefix) {
+	std::vector<std::string> result;
+
+	std::queue<std::pair<Node*, std::string>> q;
+
+	Node* root = searchWord(prefix);
+
+	q.push(std::make_pair(root, prefix));
 
 
-	return std::vector<std::string>();
+	while (!q.empty()) {
+		std::pair<Node*, std::string> current = q.front();
+		if (q.front().first->isWord) {
+			result.push_back(q.front().second);
+		}
+		q.pop();
+
+		for (auto& [letter, child] : current.first->children) {
+			q.push(std::make_pair(&child, current.second + letter));
+		}
+	}
+
+	return result;
 }
 
 std::vector<std::string> Trie::lexicographicalSearch(std::string prefix) {
 	std::vector<std::string> wordList;
-	Node* node = searchWord(prefix);
+	Node* source = searchWord(prefix);
 	
-	DFS(node,prefix,wordList);
+	DFS(source,prefix,wordList);
 
 	return wordList;
 }
 
 void Trie::DFS(Node* node, std::string& prefix, std::vector<std::string>& wordList) {
 
-	
-
 }
+
+

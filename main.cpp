@@ -84,7 +84,7 @@ int main() {
     loadDictionary(trie);
 
     int userInput = 0;
-    int preferredOrder = 3; 
+    int preferredOrder = 1; 
 
     do {
         std::cout <<
@@ -95,6 +95,7 @@ int main() {
             std::string key;
             std::cout << "Enter word: ";
             std::cin >> key;
+            trie.increaseFrequency(key);
             std::vector<std::string> wordList;
             switch (preferredOrder)
             {
