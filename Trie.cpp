@@ -110,7 +110,7 @@ std::vector<std::string> Trie::shortestSearch(std::string prefix) {
 
 	Node* root = searchWord(prefix);
 
-	q.push(std::make_pair(root, prefix));
+	q.push({root,prefix});
 
 
 	while (!q.empty()) {
@@ -121,7 +121,7 @@ std::vector<std::string> Trie::shortestSearch(std::string prefix) {
 		q.pop();
 
 		for (auto& [letter, child] : current.first->children) {
-			q.push(std::make_pair(&child, current.second + letter));
+			q.push({&child, current.second + letter});
 		}
 	}
 
@@ -138,7 +138,16 @@ std::vector<std::string> Trie::lexicographicalSearch(std::string prefix) {
 }
 
 void Trie::DFS(Node* node, std::string& prefix, std::vector<std::string>& wordList) {
+	if (node->isWord) {
+		wordList.push_back(prefix);
+	}
+	for (std::map<char, Node>::iterator it = node->children.begin(); it != node->children.end(); ++it) {
+		char ch = it->first;
+		Node& childNode = it->second;
+		prefix.push_back(ch);
+		DFS(&childNode, prefix, wordList);
+		prefix.pop_back();
 
+	}
 }
-
 

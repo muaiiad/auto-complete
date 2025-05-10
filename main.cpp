@@ -1,7 +1,9 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
+#include <algorithm>
 #include "Trie.h"
+#include <algorithm>
 
 #define FREQUENCY_ORDER 1
 #define SHORTEST_ORDER 2
@@ -84,7 +86,7 @@ int main() {
     loadDictionary(trie);
 
     int userInput = 0;
-    int preferredOrder = 1; 
+    int preferredOrder = SHORTEST_ORDER; 
 
     do {
         std::cout <<
@@ -99,17 +101,17 @@ int main() {
             std::vector<std::string> wordList;
             switch (preferredOrder)
             {
-            case FREQUENCY_ORDER:
-                wordList = trie.frequencySearch(key);
-                break;
-            case SHORTEST_ORDER:
-                wordList = trie.shortestSearch(key);
-                break;
-            case LEXIOGRAPHICAL_ORDER:
-                wordList = trie.lexicographicalSearch(key);
-                break;
-            default:
-                break;
+                case FREQUENCY_ORDER:
+                    wordList = trie.frequencySearch(key);
+                    break;
+                case SHORTEST_ORDER:
+                    wordList = trie.shortestSearch(key);
+                    break;
+                case LEXIOGRAPHICAL_ORDER:
+                    wordList = trie.lexicographicalSearch(key);
+                    break;
+                default:
+                    break;
             }
             for (const auto& word : wordList) {
                 std::cout << word << '\n';
@@ -133,9 +135,4 @@ int main() {
         }
 
     } while (userInput != 0);
-
-    trie.insertWord("Hi");
-    trie.insertWord("My");
-    trie.increaseFrequency("Hi");
-
 }

@@ -1,5 +1,6 @@
 #pragma once
 #include <unordered_map>
+#include <map>
 #include <string>
 
 class Trie
@@ -8,7 +9,7 @@ private:
 	struct Node {
 		bool isWord = false;
 		int frequency = 0;
-		std::unordered_map<char, Node> children;
+		std::map<char, Node> children;
 	};
 private:
 	Node root;
