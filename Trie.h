@@ -1,11 +1,11 @@
 #pragma once
-#include <unordered_map>
 #include <map>
 #include <string>
+#include <vector>
 
 class Trie
 {
-private:
+public:
 	struct Node {
 		bool isWord = false;
 		int frequency = 0;

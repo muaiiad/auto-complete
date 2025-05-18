@@ -1,9 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
-#include <algorithm>
 #include "Trie.h"
-#include <algorithm>
 
 #define FREQUENCY_ORDER 1
 #define SHORTEST_ORDER 2
@@ -60,33 +58,57 @@ void loadDictionary(Trie &trie) {
         std::cerr << "File not found.\n";
     }
 }
-
-void writeDictionary(Trie& trie) {
+void writeDictionary(Trie& trie)
+{
     std::string word;
     int frequency = 0;
+    std::vector<std::string> words = trie.frequencySearch("");
+    std::ofstream output("Dictionary.txt");
 
-    // TODO, need one of the search algorithms (doesnt really matter which one)
+    if (output.is_open())
+    {
+        for (const auto& word : words)
+        {
+            Trie::Node* node = trie.searchWord(word);
+            int frequency = (node && node->isWord) ? node->frequency : 0;
+            output << word << " " << frequency << "\n";
+        }
+        output.close();
+        std::cout << "Dictionary updated successfully.\n";
+    }
+    else
+    {
+        std::cerr << "Cannot open Dictionary.txt for writing.\n";
+    }
+}
+
+
+
+void setWordList(const int& preferredOrder, std::vector<std::string> &wordList, Trie &trie, const std::string &key) {
+    switch (preferredOrder)
+    {
+    case FREQUENCY_ORDER:
+        wordList = trie.frequencySearch(key);
+        break;
+    case SHORTEST_ORDER:
+        wordList = trie.shortestSearch(key);
+        break;
+    case LEXIOGRAPHICAL_ORDER:
+        wordList = trie.lexicographicalSearch(key);
+        break;
+    default:
+        break;
+    }
 }
 
 
 
 int main() {
-
-    /*
-    Before we make the GUI, we'll have some primitive input system, like this:
-    
-    1 - Find word prefixes
-    2 - Add word
-    3 - Delete word/word prefix
-    4 - Change word sorting order
-    0 - Exit
-    
-    */
     Trie trie;
     loadDictionary(trie);
 
     int userInput = 0;
-    int preferredOrder = SHORTEST_ORDER; 
+    int preferredOrder = FREQUENCY_ORDER; 
 
     do {
         std::cout <<
@@ -96,23 +118,18 @@ int main() {
         if (userInput == 1) {
             std::string key;
             std::cout << "Enter word: ";
-            std::cin >> key;
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); //necessary for ignoring previous newline
+            getline(std::cin, key);
+
+            while (key.empty() || key.find(" ") != std::string::npos) {
+                std::cout << "No empty characters!\n";
+                getline(std::cin, key);
+            }
+
             trie.increaseFrequency(key);
             std::vector<std::string> wordList;
-            switch (preferredOrder)
-            {
-                case FREQUENCY_ORDER:
-                    wordList = trie.frequencySearch(key);
-                    break;
-                case SHORTEST_ORDER:
-                    wordList = trie.shortestSearch(key);
-                    break;
-                case LEXIOGRAPHICAL_ORDER:
-                    wordList = trie.lexicographicalSearch(key);
-                    break;
-                default:
-                    break;
-            }
+            setWordList(preferredOrder, wordList, trie, key);
+
             for (const auto& word : wordList) {
                 std::cout << word << '\n';
             }
@@ -120,18 +137,49 @@ int main() {
         else if (userInput == 2) {
             std::string word;
             std::cout << "Enter word: ";
-            std::cin >> word;
+
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); //necessary for ignoring previous newline
+            getline(std::cin, word);
+
+            while (word.empty() || word.find(" ") != std::string::npos ) {
+                std::cout << "No empty characters!\n";
+                getline(std::cin, word);
+            }
+
             trie.insertWord(word);
-        } else if (userInput == 3) {
+        }
+        else if (userInput == 3) {
             std::string word;
             std::cout << "Enter word: ";
-            std::cin >> word;
-            trie.deleteWord(word);
+
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); //necessary for ignoring previous newline
+            getline(std::cin, word);
+
+            while (word.empty() || word.find(" ") != std::string::npos) {
+                std::cout << "No empty characters!\n";
+                getline(std::cin, word);
+            }
+
+
+            std::vector<std::string> wordList;
+            setWordList(preferredOrder, wordList, trie, word);
+
+            std::cout << "Select word from the following (Enter number):\n ";
+            for (int i = 0;i<wordList.size();i++) {
+                std::cout << i+1 << ". " <<  wordList[i] << '\n';
+            }
+
+            int idx;
+            std::cin >> idx;
+            trie.deleteWord(wordList[idx-1]);
         }
         else if (userInput == 4) {
             std::cout <<
             "1 - Most searched words first\n2 - Shortest words first\n3 - Sort alphabetically\n";
             std::cin >> preferredOrder;
+        }
+        else if (userInput == 0) {
+            writeDictionary(trie);
         }
 
     } while (userInput != 0);

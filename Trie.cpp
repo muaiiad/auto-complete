@@ -52,9 +52,10 @@ Trie::Node* Trie::searchWord(const std::string& key)
 	for (auto c : key) {
 		char letter = tolower(c);
 		if (temp->children.find(letter) == temp->children.end()) {
+
 			return nullptr;
 		}
-		temp = &temp->children[letter];
+		temp = &temp->children.at(letter);
 	}
 	return temp;
 }
@@ -63,7 +64,6 @@ void Trie::increaseFrequency(const std::string& word) {
 	Node* temp = searchWord(word);
 
 	if (temp == nullptr) {
-		insertWord(word);
 		return;
 	}
 
@@ -79,6 +79,8 @@ std::vector<std::string> Trie::frequencySearch(std::string prefix) {
 
 	Node* root = searchWord(prefix);
 
+	if (!root)
+		return {};
 	q.push(std::make_pair(root, prefix));
 
 
@@ -110,6 +112,9 @@ std::vector<std::string> Trie::shortestSearch(std::string prefix) {
 
 	Node* root = searchWord(prefix);
 
+	if (!root)
+		return {};
+
 	q.push({root,prefix});
 
 
@@ -131,8 +136,12 @@ std::vector<std::string> Trie::shortestSearch(std::string prefix) {
 std::vector<std::string> Trie::lexicographicalSearch(std::string prefix) {
 	std::vector<std::string> wordList;
 	Node* source = searchWord(prefix);
+
+	if (!source)
+		return {};
 	
-	DFS(source,prefix,wordList);
+	if (source)
+		DFS(source,prefix,wordList);
 
 	return wordList;
 }
