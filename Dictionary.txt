@@ -37,8 +37,8 @@ delivery 59
 cost 58
 emphasis 56
 context 55
+action 55
 growth 54
-action 54
 efficiency 52
 collection 50
 authority 49

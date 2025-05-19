@@ -10,6 +10,10 @@
 #define SHORTEST_ORDER 2
 #define LEXIOGRAPHICAL_ORDER 3
 
+#define RESET   "\033[0m"
+#define CYAN     "\033[1;36m" // codes to color text in the terminal, used for highlighting
+
+
 /*
 Autocomplete System - Feature Specification
 
@@ -185,7 +189,7 @@ int main() {
                     // Highlight exact match
                     for (const auto& word : wordList) {
                         if (word == key) {
-                            std::cout << ">> " << word << " (exact match)\n";
+                            std::cout << CYAN << word << RESET << "\n";
                         }
                         else {
                             std::cout << word << '\n';
