@@ -57,6 +57,11 @@ Trie::Node* Trie::searchWord(const std::string& key)
 		}
 		temp = &temp->children.at(letter);
 	}
+	if (temp != nullptr && temp->isWord)
+	{
+		temp->isExact = true;
+
+	}
 	return temp;
 }
 
@@ -120,7 +125,16 @@ std::vector<std::string> Trie::shortestSearch(std::string prefix) {
 
 	while (!q.empty()) {
 		std::pair<Node*, std::string> current = q.front();
-		if (q.front().first->isWord) {
+		if (q.front().first->isExact)
+		{
+
+			result.push_back(q.front().second + "*");
+			q.front().first->isExact = false;
+
+		}
+		else if (q.front().first->isWord)
+		{
+
 			result.push_back(q.front().second);
 		}
 		q.pop();
