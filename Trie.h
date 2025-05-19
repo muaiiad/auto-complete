@@ -1,8 +1,8 @@
 #pragma once
+#include <unordered_map>
 #include <map>
 #include <string>
-#include <vector>
-
+#include<vector>
 class Trie
 {
 public:
@@ -24,7 +24,7 @@ public:
 	std::vector<std::string> shortestSearch(std::string prefix);
 	std::vector<std::string> lexicographicalSearch(std::string prefix);
 	void DFS(Node* node, std::string& prefix, std::vector<std::string>& wordList);
-	
+
 
 
 
