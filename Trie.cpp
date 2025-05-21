@@ -56,11 +56,7 @@ Trie::Node* Trie::searchWord(const std::string& key)
 		}
 		temp = &temp->children[letter];
 	}
-	if (temp != nullptr && temp->isWord)
-	{
-		temp->isExact = true;
 
-	}
 	return temp;
 }
 
@@ -68,14 +64,16 @@ void Trie::increaseFrequency(const std::string& word) {
 	Node* temp = searchWord(word);
 
 	if (temp == nullptr) {
-		insertWord(word);
-		return;
+		insertWord(word,0);
 	}
+	temp = searchWord(word);
+	temp->isWord = false;
 
 	temp->frequency++;
 	if (temp->frequency >= 3) {
 		temp->isWord = true;
 	}
+
 }
 
 std::vector<std::string> Trie::frequencySearch(std::string prefix) {
@@ -120,16 +118,8 @@ std::vector<std::string> Trie::shortestSearch(std::string prefix) {
 
 	while (!q.empty()) {
 		std::pair<Node*, std::string> current = q.front();
-		if (q.front().first->isExact)
+		if (q.front().first->isWord)
 		{
-
-			result.push_back(q.front().second + "*");
-			q.front().first->isExact = false;
-
-		}
-		else if (q.front().first->isWord)
-		{
-
 			result.push_back(q.front().second);
 		}
 		q.pop();

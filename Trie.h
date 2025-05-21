@@ -8,7 +8,6 @@ class Trie
 public:
 	struct Node {
 		bool isWord = false;
-		bool isExact = false;
 		int frequency = 0;
 		std::map<char, Node> children;
 	};

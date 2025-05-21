@@ -157,9 +157,11 @@ int main() {
                     }
                 }
 
+                trie.increaseFrequency(key);
+
                 // Check if prefix exists first
                 Trie::Node* node = trie.searchWord(key);
-                if (node == nullptr) {
+                if (node == nullptr || node->isWord == false) {
                     std::cout << "No suggestions found.\n";
                     continue; // Return to do while loop
                 }
@@ -184,7 +186,6 @@ int main() {
                     std::cout << "No suggestions found.\n";
                 }
                 else {
-                    trie.increaseFrequency(key);
                     writeDictionary(trie);
                     // Highlight exact match
                     for (const auto& word : wordList) {
