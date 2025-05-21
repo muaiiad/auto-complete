@@ -11,7 +11,7 @@ Trie::~Trie()
 {
 }
 
-void Trie::insertWord(const std::string& word, const int freq) {
+void Trie::insertWord(const std::string& word, const int freq, const bool valid ) {
 
 	Node* temp = &root;
 
@@ -23,7 +23,7 @@ void Trie::insertWord(const std::string& word, const int freq) {
 		temp = &temp->children[letter];
 	}
 
-	temp->isWord = true;
+	temp->isWord = valid;
 	temp->frequency = freq;
 }
 
@@ -64,10 +64,9 @@ void Trie::increaseFrequency(const std::string& word) {
 	Node* temp = searchWord(word);
 
 	if (temp == nullptr) {
-		insertWord(word,0);
+		insertWord(word,1,false);
+		return;
 	}
-	temp = searchWord(word);
-	temp->isWord = false;
 
 	temp->frequency++;
 	if (temp->frequency >= 3) {
